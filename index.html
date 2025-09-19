@@ -1,1 +1,418 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>我的個人介紹</title>
+  <meta name="description" content="個人作品集與自我介紹網站（繁體中文）" />
+  <style>
+    :root{
+      --bg: #0b1020;
+      --card: #121936;
+      --card-2: #0f1530;
+      --text: #e6e9f5;
+      --muted: #a7b0d0;
+      --accent: #7aa2ff;
+      --accent-2:#b87bff;
+      --ring: rgba(122,162,255,.4);
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 18px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Noto Sans TC, "PingFang TC", "Microsoft JhengHei", sans-serif;
+      color:var(--text); background: radial-gradient(1200px 800px at 80% -10%, rgba(123,132,255,.18), transparent 60%),
+                         radial-gradient(1000px 700px at -10% 0%, rgba(255,141,201,.15), transparent 60%),
+                         linear-gradient(180deg, #0b1020 0%, #0a0f23 100%);
+      line-height:1.7;
+    }
+    a{ color: var(--accent); text-decoration: none; }
+    header{
+      position:sticky; top:0; z-index:20; backdrop-filter: blur(8px);
+      background: linear-gradient(180deg, rgba(10,15,35,.75), rgba(10,15,35,.35));
+      border-bottom: 1px solid rgba(122,162,255,.15);
+    }
+    .container{ width:min(1100px, 92%); margin-inline:auto; }
+    .nav{ display:flex; align-items:center; justify-content:space-between; padding:14px 0; }
+    .nav a{ margin-left:20px; font-weight:600; color:var(--text); opacity:.9 }
+    .nav a:hover{ color:white }
+
+    .hero{ display:grid; grid-template-columns: 1.2fr .8fr; gap:24px; align-items:center; padding:64px 0 32px }
+    .hero h1{ font-size: clamp(32px, 4vw, 56px); line-height:1.1; margin:0 0 12px }
+    .hero p{ color: var(--muted); margin: 10px 0 22px; font-size: clamp(16px, 2vw, 18px) }
+    .cta{ display:flex; gap:12px; flex-wrap:wrap }
+    .btn{ padding:12px 18px; border-radius: 999px; font-weight:700; cursor:pointer; border:1px solid rgba(255,255,255,.1); background: linear-gradient(135deg, var(--accent), var(--accent-2)); color:#0b1020; box-shadow: var(--shadow) }
+    .btn.secondary{ background: transparent; color: var(--text); border-color: rgba(122,162,255,.35) }
+
+    .profile{
+      position:relative; aspect-ratio: 1/1; border-radius: var(--radius); overflow:hidden; background: linear-gradient(135deg, rgba(122,162,255,.12), rgba(184,123,255,.12));
+      border:1px solid rgba(122,162,255,.25); box-shadow: var(--shadow);
+    }
+    .profile img{ width:100%; height:100%; object-fit:cover; display:block }
+
+    section{ padding:56px 0 }
+    h2{ font-size: clamp(24px, 3vw, 32px); margin:0 0 18px }
+    .card{ background: linear-gradient(180deg, var(--card), var(--card-2)); border: 1px solid rgba(255,255,255,.06); padding:24px; border-radius: var(--radius); box-shadow: var(--shadow) }
+
+    .grid{ display:grid; gap:18px }
+    .grid.cols-3{ grid-template-columns: repeat(3, 1fr) }
+    .grid.cols-2{ grid-template-columns: repeat(2, 1fr) }
+
+    .tag{ padding:6px 10px; border-radius:999px; background: rgba(122,162,255,.12); border:1px solid rgba(122,162,255,.25); color:#cfe0ff; font-size:12px; font-weight:600 }
+    .tags{ display:flex; flex-wrap:wrap; gap:8px }
+
+    .gallery{ display:grid; grid-template-columns: repeat(3, 1fr); gap:12px }
+    .gallery img{ width:100%; height:180px; object-fit:cover; border-radius:12px; border:1px solid rgba(255,255,255,.08) }
+
+    .media-card{ display:grid; gap:14px; align-items:center; grid-template-columns: 140px 1fr }
+    .media-thumb{ width:140px; aspect-ratio:16/9; border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,.12); background:#0e1330 }
+    .media-thumb img, .media-thumb video{ width:100%; height:100%; object-fit:cover; display:block }
+    /* 讓 YouTube / Suno 內嵌框架符合縮圖容器 */
+    .media-thumb iframe{ width:100%; height:100%; border:0; display:block }
+
+    footer{ border-top:1px solid rgba(122,162,255,.15); padding:24px 0 60px; color: var(--muted) }
+
+    /* 小螢幕響應 */
+    @media (max-width: 900px){
+      .hero{ grid-template-columns: 1fr; }
+    }
+    @media (max-width: 700px){
+      .grid.cols-3{ grid-template-columns: 1fr }
+      .grid.cols-2{ grid-template-columns: 1fr }
+      .gallery{ grid-template-columns: 1fr 1fr }
+      .media-card{ grid-template-columns: 1fr }
+    }
+
+    /* 漂浮裝飾 */
+    .orb{
+      position: absolute; inset:auto; pointer-events:none; filter: blur(40px); opacity:.35;
+      background: radial-gradient(circle at 30% 30%, var(--accent), transparent 60%);
+      width: 240px; height:240px; border-radius:50%; right:-40px; top:-40px;
+      animation: float 8s ease-in-out infinite alternate;
+    }
+    @keyframes float{ from{ transform: translateY(0) } to{ transform: translateY(18px) } }
+
+    /* 捲動指示 */
+    .scroll-hint{ font-size:13px; color:var(--muted); display:flex; align-items:center; gap:8px }
+    .dot{ width:6px; height:6px; border-radius:50%; background: var(--accent); box-shadow: 0 0 0 6px rgba(122,162,255,.1) }
+
+    /* === 3D 互動效果（滑鼠傾斜 / 微視差）=== */
+    .tilt{ transform-style: preserve-3d; transition: transform .25s ease, box-shadow .25s ease; will-change: transform; }
+    .tilt:hover{ box-shadow: 0 14px 40px rgba(0,0,0,.45), 0 0 0 1px rgba(122,162,255,.18) inset; }
+    @media (prefers-reduced-motion: reduce){ .tilt{ transition:none } }
+      /* 特色單一影片樣式（放大版） */
+    .featured-video{ grid-template-columns: 1fr; }
+    .featured-video .media-thumb{ width:100%; aspect-ratio:16/9; }
+    .featured-video .media-thumb iframe,
+    .featured-video .media-thumb video{ width:100%; height:100%; display:block }
+    .featured-video > div:last-child{ padding-top:6px }
+    /* 特色單一影片樣式（放大版） */
+    .featured-video{ grid-template-columns: 1fr; }
+    .featured-video .media-thumb{ width:100%; aspect-ratio:16/9; }
+    .featured-video .media-thumb iframe,
+    .featured-video .media-thumb video{ width:100%; height:100%; display:block }
+    .featured-video > div:last-child{ padding-top:6px }
+
+    /* 自訂音樂播放器條 */
+    .audio-player{ display:grid; grid-template-columns: auto 1fr auto; gap:14px; align-items:center; padding:12px; border-radius:14px; background: linear-gradient(180deg, var(--card), var(--card-2)); border:1px solid rgba(255,255,255,.06); box-shadow: var(--shadow); }
+    .audio-player .cover{ width:52px; height:52px; border-radius:10px; object-fit:cover; border:1px solid rgba(255,255,255,.08); background:#0e1330 }
+    .audio-player .meta{ line-height:1.3 }
+    .audio-player .title{ font-weight:700 }
+    .audio-player .artist{ color:var(--muted); font-size:14px }
+    .controls{ display:flex; align-items:center; gap:8px }
+    .icon-btn{ width:36px; height:36px; border-radius:10px; border:1px solid rgba(255,255,255,.08); background: rgba(255,255,255,.04); display:grid; place-items:center; cursor:pointer }
+    .icon-btn:hover{ background: rgba(255,255,255,.08) }
+    .icon-btn svg{ width:18px; height:18px; fill:#e6e9f5 }
+    .icon-btn[disabled]{ opacity:.5; cursor:not-allowed }
+    .play-toggle .pause{ display:none }
+    .play-toggle.is-playing .play{ display:none }
+    .play-toggle.is-playing .pause{ display:block }
+    .progress{ grid-column: 1 / -1; position:relative; height:8px; background: rgba(255,255,255,.06); border-radius:999px; overflow:hidden }
+    .progress__bar{ position:absolute; inset:0; transform-origin:left center; transform: scaleX(0); background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
+    #player{ display:none }
+</style>
+  <link rel="preload" as="image" href="images/profile.jpg" />
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div style="font-weight:800; letter-spacing:.5px">我的個人介紹</div>
+      <nav>
+        <a href="#about">關於我</a>
+        <a href="#skills">技能</a>
+        <a href="#gallery">相片</a>
+        <a href="#video">影片</a>
+        <a href="#music">音樂</a>
+        <a href="#contact">聯絡</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Hero -->
+    <section class="hero">
+      <div>
+        <h1>嗨，我是<span style="background:linear-gradient(135deg,var(--accent),var(--accent-2)); -webkit-background-clip:text; background-clip:text; color:transparent">（你的名字）</span></h1>
+        <p>這是一個以繁體中文打造的個人介紹網站。我熱愛科技、設計與學習，喜歡把靈感變成作品。以下有我的簡介、技能、相片、影片與音樂，歡迎探索！</p>
+        <div class="cta">
+          <a class="btn" href="#about">立即瞭解我</a>
+          <a class="btn secondary" href="#contact">與我聯絡</a>
+        </div>
+        <div style="margin-top:18px" class="scroll-hint"><span class="dot"></span>向下捲動以查看更多內容</div>
+      </div>
+      <div class="profile">
+        <!-- 將 src 換成你的個人照片檔案，例如 images/me.jpg -->
+        <img src="images/profile.jpg" alt="個人照片：夜景街頭人像" loading="eager" fetchpriority="high" />
+        <div class="orb" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about">
+      <h2>關於我</h2>
+      <div class="card">
+        <p>我是（你的名字），目前就讀／任職於（學校／公司）。興趣包含：攝影、音樂、剪輯、網頁前端開發等。我相信設計不只是外觀，更是溝通與體驗；寫程式不只是功能，更是把想法落地。</p>
+        <div class="tags" style="margin-top:10px">
+          <span class="tag">#前端開發</span>
+          <span class="tag">#攝影剪輯</span>
+          <span class="tag">#音樂創作</span>
+          <span class="tag">#持續學習</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills -->
+    <section id="skills">
+      <h2>技能</h2>
+      <div class="grid cols-3">
+        <div class="card">
+          <h3 style="margin:0 0 6px">網頁技術</h3>
+          <p style="margin:0; color:var(--muted)">HTML / CSS / JavaScript、RWD 響應式設計、基本 SEO、簡易互動效果</p>
+        </div>
+        <div class="card">
+          <h3 style="margin:0 0 6px">多媒體</h3>
+          <p style="margin:0; color:var(--muted)">相片修圖、影片剪輯、音訊處理，能將素材整合成完整作品</p>
+        </div>
+        <div class="card">
+          <h3 style="margin:0 0 6px">團隊與學習</h3>
+          <p style="margin:0; color:var(--muted)">良好溝通、時間管理、主動學習新工具與新知識</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gallery -->
+    <section id="gallery">
+      <h2>相片畫廊</h2>
+      <div class="card">
+        <p style="margin-top:0;color:var(--muted)">以下為示意縮圖，請將檔案路徑替換成你的相片。</p>
+        <div class="gallery" style="margin-top:10px">
+          <img src="images/profile.jpg" alt="我的個人照片" />
+          <img src="images/photo2.jpg" alt="相片 2" />
+          <img src="images/photo3.jpg" alt="相片 3" />
+          <img src="images/photo4.jpg" alt="相片 4" />
+          <img src="images/photo5.jpg" alt="相片 5" />
+          <img src="images/photo6.jpg" alt="相片 6" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Video -->
+    <section id="video">
+      <h2>影片</h2>
+      <div class="card featured-video">
+        <div class="media-thumb">
+          <iframe src="https://www.youtube-nocookie.com/embed/8qmPLQzBRg8?rel=0&playsinline=1" loading="lazy" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- Music -->
+    <section id="music">
+      <h2>音樂</h2>
+      <div class="card">
+        <div class="audio-player tilt" id="audioBar">
+          <img class="cover" src="music/cover.jpg" alt="專輯封面" onerror="this.style.display='none'"/>
+          <div class="meta">
+            <div class="title">黃陳進發的歌</div>
+            <div class="artist">Augustus · <span id="time">00:00</span> / <span id="dur">--:--</span></div>
+          </div>
+          <div class="controls">
+            <button class="icon-btn" id="prevBtn" aria-label="上一首">
+              <svg viewBox="0 0 24 24"><path d="M6 5h2v14H6zM20 6v12L9 12z"/></svg>
+            </button>
+            <button class="icon-btn play-toggle" id="playBtn" aria-label="播放/暫停">
+              <svg class="play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              <svg class="pause" viewBox="0 0 24 24"><path d="M6 5h4v14H6zm8 0h4v14h-4z"/></svg>
+            </button>
+            <button class="icon-btn" id="nextBtn" aria-label="下一首">
+              <svg viewBox="0 0 24 24"><path d="M16 5h2v14h-2zM4 6v12l11-6z"/></svg>
+            </button>
+          </div>
+          <div class="progress" id="progress"><div class="progress__bar" id="progressBar"></div></div>
+        </div>
+        <audio id="player" data-testid="audio-player" preload="metadata" crossorigin="anonymous" playsinline>
+          <source id="srcPrimary" src="https://docs.google.com/uc?export=download&id=1Wv3catTd8mOxSxnI1SrTVgIw7rEaO4vO&confirm=t" type="audio/mpeg" />
+          <source id="srcAlt" src="https://drive.google.com/uc?export=download&id=1Wv3catTd8mOxSxnI1SrTVgIw7rEaO4vO" type="audio/mpeg" />
+        </audio>
+          <p id="audioFallback" style="margin-top:10px;color:var(--muted); display:none">無法直接播放？<a href="https://drive.google.com/file/d/1Wv3catTd8mOxSxnI1SrTVgIw7rEaO4vO/view" target="_blank" rel="noopener">在 Google Drive 開啟</a></p>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact">
+      <h2>聯絡我</h2>
+      <div class="card" id="contact-card">
+        <form onsubmit="event.preventDefault(); alert('已收到訊息，感謝！'); this.reset();" style="max-width:720px; margin:0 auto">
+          <label>你的名字<br/>
+            <input required name="name" placeholder="請輸入姓名" style="width:100%; padding:10px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.14); background: rgba(255,255,255,.03); color:var(--text)" />
+          </label>
+          <br/><br/>
+          <label>你的訊息<br/>
+            <textarea required name="msg" placeholder="想對我說的話..." rows="6" style="width:100%; padding:10px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.14); background: rgba(255,255,255,.03); color:var(--text)"></textarea>
+          </label>
+          <br/><br/>
+          <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap">
+            <button class="btn tilt" type="submit">送出</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      © <span id="year"></span> （你的名字）. 以繁體中文設計製作。
+    </div>
+  </footer>
+
+  <script>
+    // ===== 自動化健檢 / 測試（簡易 test cases） =====
+    (function selfTest(){
+      const tests = [];
+      tests.push({name:'存在年份節點', pass: !!document.getElementById('year')});
+      tests.push({name:'存在音樂播放按鈕#playBtn', pass: !!document.getElementById('playBtn')});
+      tests.push({name:'存在音樂播放器#audio#player', pass: !!document.getElementById('player')});
+      tests.push({name:'存在進度條#progressBar', pass: !!document.getElementById('progressBar')});
+      tests.push({name:'存在自訂播放器#audioBar', pass: !!document.getElementById('audioBar')});
+      const audioEl = document.getElementById('player');
+      tests.push({name:'Google Drive 來源', pass: /google\.com\/uc/.test(audioEl?.src||'')});
+      tests.forEach(t=> console.assert(t.pass, `[自測] 失敗：${t.name}`));
+      if (tests.every(t=>t.pass)) console.log('%c[自測] 通過：基本節點存在','color:#7aa2ff');
+    })();
+
+    // 年份
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // 音樂播放按鈕（避免自動播放限制）——安全綁定
+    function initAudioControls(){
+      const player = document.getElementById('player');
+      const playBtn = document.getElementById('playBtn');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const timeEl  = document.getElementById('time');
+      const durEl   = document.getElementById('dur');
+      const progress = document.getElementById('progress');
+      const progressBar = document.getElementById('progressBar');
+      if (!player || !playBtn){ console.warn('[音樂] 找不到播放節點，已略過事件綁定'); return; }
+
+      // 嘗試使用同網域音檔（最穩定）：music/track.mp3 存在則優先
+      const localUrl = 'music/track.mp3';
+      const primary = document.getElementById('srcPrimary');
+      const alt = document.getElementById('srcAlt');
+      try{ fetch(localUrl, { method:'HEAD' }).then(r=>{ if(r.ok && primary){ primary.src = localUrl; player.load(); } }); }catch(_){}
+
+      const fmt = (t)=> (isFinite(t) ? String(Math.floor(t/60)).padStart(2,'0')+':'+String(Math.floor(t%60)).padStart(2,'0') : '--:--');
+      const update = ()=>{
+        if (timeEl) timeEl.textContent = fmt(player.currentTime);
+        if (durEl && isFinite(player.duration)) durEl.textContent = fmt(player.duration);
+        const ratio = (isFinite(player.duration) && player.duration>0) ? player.currentTime / player.duration : 0;
+        if (progressBar) progressBar.style.transform = `scaleX(${Math.max(0, Math.min(1, ratio))})`;
+      };
+      const refreshIcons = ()=>{ playBtn.classList.toggle('is-playing', !player.paused); };
+
+      // 防止重複綁定
+      playBtn.replaceWith(playBtn.cloneNode(true));
+      const freshBtn = document.getElementById('playBtn');
+
+      freshBtn.addEventListener('click', async ()=>{
+        try{ if (player.paused) { await player.play(); } else { player.pause(); } }
+        catch(err){ const fb=document.getElementById('audioFallback'); if (fb) fb.style.display='block'; console.error(err); }
+      }); } else { player.pause(); } }
+        catch(err){ alert('播放被瀏覽器阻擋，請再次點擊或檢查檔案路徑。'); console.error(err); }
+      });
+      if (prevBtn) prevBtn.addEventListener('click', ()=>{ player.currentTime = 0; });
+      if (nextBtn) nextBtn.addEventListener('click', ()=>{ player.currentTime = 0; });
+
+      if (progress) progress.addEventListener('click', (e)=>{
+        const r = progress.getBoundingClientRect();
+        const p = (e.clientX - r.left) / r.width;
+        if (isFinite(player.duration)) player.currentTime = Math.max(0, Math.min(player.duration * p, player.duration));
+      });
+
+      player.addEventListener('timeupdate', update);
+      player.addEventListener('loadedmetadata', update);
+      player.addEventListener('play', ()=>{ refreshIcons(); update(); });
+      player.addEventListener('pause', ()=>{ refreshIcons(); update(); });
+      player.addEventListener('ended', ()=>{ refreshIcons(); });
+      player.addEventListener('error', ()=>{ const fb=document.getElementById('audioFallback'); if (fb) fb.style.display='block'; }); if (fb) fb.style.display='block'; });
+
+      update(); refreshIcons();
+    }
+if (document.readyState === 'loading'){
+      document.addEventListener('DOMContentLoaded', initAudioControls);
+    }else{
+      initAudioControls();
+    }
+
+    // 導覽平滑捲動
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', e=>{
+        const id=a.getAttribute('href');
+        if(id && id.length>1){ e.preventDefault(); document.querySelector(id).scrollIntoView({behavior:'smooth'}); }
+      });
+    });
+
+    /* === 3D 互動效果：卡片/圖片傾斜 + 發光球微視差 === */
+    (function(){
+      const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+      // 將需要 3D 的元素加上 tilt 類別（不改你的原始 HTML 結構）
+      const profile = document.querySelector('.profile');
+      if (profile) profile.classList.add('tilt');
+      document.querySelectorAll('.card, .media-thumb, .gallery img').forEach(el => el.classList.add('tilt'));
+
+      if (!isTouch){
+        const maxTilt = 14;  // 最大傾斜角度（可調）
+        const scale   = 1.03; // 懸停縮放（可調）
+
+        const els = Array.from(document.querySelectorAll('.tilt'));
+        function setTilt(el, e){
+          const r  = el.getBoundingClientRect();
+          const px = (e.clientX - r.left) / r.width  - 0.5;
+          const py = (e.clientY - r.top)  / r.height - 0.5;
+          const rx = (-py * maxTilt).toFixed(2);
+          const ry = ( px * maxTilt).toFixed(2);
+          el.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) scale(${scale})`;
+        }
+        els.forEach(el => {
+          el.addEventListener('mousemove', (e)=> setTilt(el, e));
+          el.addEventListener('mouseleave',   ()=> el.style.transform = '');
+        });
+
+        // 微視差：讓發光球(orb)跟隨滑鼠輕微移動
+        const orb = document.querySelector('.orb');
+        if (orb){
+          window.addEventListener('mousemove', (e) => {
+            const w = window.innerWidth, h = window.innerHeight;
+            const dx = (e.clientX / w - 0.5) * 24;
+            const dy = (e.clientY / h - 0.5) * 24;
+            orb.style.transform = `translate3d(${dx}px, ${dy}px, 0)`;
+          });
+        }
+      }
+    })();
+  </script>
+</body>
+</html>
 
