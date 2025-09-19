@@ -1,4 +1,13 @@
-<!doctype html>
+const progressBar = document.getElementById('progressBar');
+      const coverEl = document.querySelector('#audioBar .cover');
+      if (!player || !playBtn){ console.warn('[音樂] 找不到播放節點，已略過事件綁定'); return; }
+
+      // 依序嘗試多個來源（Pages -> raw -> jsDelivr）
+      const sources = Array.from(player.querySelectorAll('source')).map(s=> s.getAttribute('src'));
+      let srcIdx = 0;
+      function setSource(i){ srcIdx = i; player.src = sources[srcIdx]; player.load(); }
+      function nextSource(){ if (srcIdx + 1 < sources.length){ setSource(srcIdx + 1); } else { const fb=document.getElementById('audioFallback'); if (fb) fb.style.display='block'; } }
+      setSource(0);<!doctype html>
 <html lang="zh-Hant">
 <head>
   <meta charset="utf-8" />
@@ -68,56 +77,34 @@
     .media-card{ display:grid; gap:14px; align-items:center; grid-template-columns: 140px 1fr }
     .media-thumb{ width:140px; aspect-ratio:16/9; border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,.12); background:#0e1330 }
     .media-thumb img, .media-thumb video{ width:100%; height:100%; object-fit:cover; display:block }
-    /* 讓 YouTube / Suno 內嵌框架符合縮圖容器 */
     .media-thumb iframe{ width:100%; height:100%; border:0; display:block }
 
     footer{ border-top:1px solid rgba(122,162,255,.15); padding:24px 0 60px; color: var(--muted) }
 
-    /* 小螢幕響應 */
-    @media (max-width: 900px){
-      .hero{ grid-template-columns: 1fr; }
-    }
-    @media (max-width: 700px){
-      .grid.cols-3{ grid-template-columns: 1fr }
-      .grid.cols-2{ grid-template-columns: 1fr }
-      .gallery{ grid-template-columns: 1fr 1fr }
-      .media-card{ grid-template-columns: 1fr }
-    }
+    @media (max-width: 900px){ .hero{ grid-template-columns: 1fr } }
+    @media (max-width: 700px){ .grid.cols-3{ grid-template-columns: 1fr } .grid.cols-2{ grid-template-columns: 1fr } .gallery{ grid-template-columns: 1fr 1fr } .media-card{ grid-template-columns: 1fr } }
 
-    /* 漂浮裝飾 */
-    .orb{
-      position: absolute; inset:auto; pointer-events:none; filter: blur(40px); opacity:.35;
-      background: radial-gradient(circle at 30% 30%, var(--accent), transparent 60%);
-      width: 240px; height:240px; border-radius:50%; right:-40px; top:-40px;
-      animation: float 8s ease-in-out infinite alternate;
-    }
+    .orb{ position: absolute; inset:auto; pointer-events:none; filter: blur(40px); opacity:.35; background: radial-gradient(circle at 30% 30%, var(--accent), transparent 60%); width: 240px; height:240px; border-radius:50%; right:-40px; top:-40px; animation: float 8s ease-in-out infinite alternate; }
     @keyframes float{ from{ transform: translateY(0) } to{ transform: translateY(18px) } }
 
-    /* 捲動指示 */
     .scroll-hint{ font-size:13px; color:var(--muted); display:flex; align-items:center; gap:8px }
     .dot{ width:6px; height:6px; border-radius:50%; background: var(--accent); box-shadow: 0 0 0 6px rgba(122,162,255,.1) }
 
-    /* === 3D 互動效果（滑鼠傾斜 / 微視差）=== */
     .tilt{ transform-style: preserve-3d; transition: transform .25s ease, box-shadow .25s ease; will-change: transform; }
     .tilt:hover{ box-shadow: 0 14px 40px rgba(0,0,0,.45), 0 0 0 1px rgba(122,162,255,.18) inset; }
     @media (prefers-reduced-motion: reduce){ .tilt{ transition:none } }
-      /* 特色單一影片樣式（放大版） */
-    .featured-video{ grid-template-columns: 1fr; }
-    .featured-video .media-thumb{ width:100%; aspect-ratio:16/9; }
-    .featured-video .media-thumb iframe,
-    .featured-video .media-thumb video{ width:100%; height:100%; display:block }
-    .featured-video > div:last-child{ padding-top:6px }
-    /* 特色單一影片樣式（放大版） */
-    .featured-video{ grid-template-columns: 1fr; }
-    .featured-video .media-thumb{ width:100%; aspect-ratio:16/9; }
+
+    /* 單一影片放大樣式 */
+    .featured-video{ grid-template-columns: 1fr }
+    .featured-video .media-thumb{ width:100%; aspect-ratio:16/9 }
     .featured-video .media-thumb iframe,
     .featured-video .media-thumb video{ width:100%; height:100%; display:block }
     .featured-video > div:last-child{ padding-top:6px }
 
-    /* 自訂音樂播放器條 */
-    .audio-player{ display:grid; grid-template-columns: auto 1fr auto; gap:14px; align-items:center; padding:12px; border-radius:14px; background: linear-gradient(180deg, var(--card), var(--card-2)); border:1px solid rgba(255,255,255,.06); box-shadow: var(--shadow); }
-    .audio-player .cover{ width:64px; height:64px; border-radius:50%; object-fit:cover; border:1px solid rgba(255,255,255,.12); background:#0e1330; box-shadow:inset 0 0 0 2px rgba(255,255,255,.05), 0 2px 8px rgba(0,0,0,.35); transition: transform .3s ease }
-    .disc{ position:relative; width:64px; height:64px; border-radius:50%; display:grid; place-items:center; }
+    /* 自訂音樂播放器條 + 旋轉唱片 */
+    .audio-player{ display:grid; grid-template-columns: auto 1fr auto; gap:14px; align-items:center; padding:12px; border-radius:14px; background: linear-gradient(180deg, var(--card), var(--card-2)); border:1px solid rgba(255,255,255,.06); box-shadow: var(--shadow) }
+    .audio-player .cover{ width:64px; height:64px; border-radius:50%; object-fit:cover; border:1px solid rgba(255,255,255,.12); background:#0e1330; box-shadow:inset 0 0 0 2px rgba(255,255,255,.05), 0 2px 8px rgba(0,0,0,.35) }
+    .disc{ position:relative; width:64px; height:64px; border-radius:50%; display:grid; place-items:center }
     .disc::after{ content:""; position:absolute; width:12px; height:12px; border-radius:50%; background:rgba(10,15,35,.9); box-shadow:0 0 0 2px rgba(255,255,255,.08) inset }
     @keyframes spin{ to{ transform: rotate(360deg) } }
     .cover.spinning{ animation: spin 6s linear infinite }
@@ -133,9 +120,9 @@
     .play-toggle.is-playing .play{ display:none }
     .play-toggle.is-playing .pause{ display:block }
     .progress{ grid-column: 1 / -1; position:relative; height:8px; background: rgba(255,255,255,.06); border-radius:999px; overflow:hidden }
-    .progress__bar{ position:absolute; inset:0; transform-origin:left center; transform: scaleX(0); background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
+    .progress__bar{ position:absolute; inset:0; transform-origin:left center; transform: scaleX(0); background: linear-gradient(90deg, var(--accent), var(--accent-2)) }
     #player{ display:none }
-</style>
+  </style>
   <link rel="preload" as="image" href="images/profile.jpg" />
 </head>
 <body>
@@ -166,7 +153,6 @@
         <div style="margin-top:18px" class="scroll-hint"><span class="dot"></span>向下捲動以查看更多內容</div>
       </div>
       <div class="profile">
-        <!-- 將 src 換成你的個人照片檔案，例如 images/me.jpg -->
         <img src="images/profile.jpg" alt="個人照片：夜景街頭人像" loading="eager" fetchpriority="high" />
         <div class="orb" aria-hidden="true"></div>
       </div>
@@ -256,11 +242,14 @@
           <div class="progress" id="progress"><div class="progress__bar" id="progressBar"></div></div>
         </div>
         <audio id="player" data-testid="audio-player" preload="metadata" crossorigin="anonymous" playsinline>
-          <source id="srcPrimary" src="https://docs.google.com/uc?export=download&id=1Wv3catTd8mOxSxnI1SrTVgIw7rEaO4vO&confirm=t" type="audio/mpeg" />
-          <source id="srcAlt" src="https://drive.google.com/uc?export=download&id=1Wv3catTd8mOxSxnI1SrTVgIw7rEaO4vO" type="audio/mpeg" />
+          <!-- 主要來源：同站 GitHub Pages；備用：raw.githubusercontent CDN；最後：jsDelivr CDN -->
+          <source id="srcPrimary" src="music/huangchenjinfa.mp3" type="audio/mpeg" />
+          <source id="srcRaw" src="https://raw.githubusercontent.com/Augustusz14/my-website/main/music/huangchenjinfa.mp3" type="audio/mpeg" />
+          <source id="srcCdn" src="https://cdn.jsdelivr.net/gh/Augustusz14/my-website@main/music/huangchenjinfa.mp3" type="audio/mpeg" />
         </audio>
-          <p id="audioFallback" style="margin-top:10px;color:var(--muted); display:none">無法直接播放？<a href="https://drive.google.com/file/d/1Wv3catTd8mOxSxnI1SrTVgIw7rEaO4vO/view" target="_blank" rel="noopener">在 Google Drive 開啟</a></p>
-        </div>
+        <p id="audioFallback" style="margin-top:10px;color:var(--muted); display:none">若無法直接播放，請在新分頁開啟：
+          <a href="music/huangchenjinfa.mp3" target="_blank" rel="noopener">GitHub Pages 音檔連結</a></p>
+      </div>
     </section>
 
     <!-- Contact -->
@@ -300,7 +289,9 @@
       tests.push({name:'存在進度條#progressBar', pass: !!document.getElementById('progressBar')});
       tests.push({name:'存在自訂播放器#audioBar', pass: !!document.getElementById('audioBar')});
       const audioEl = document.getElementById('player');
-      tests.push({name:'Google Drive 來源', pass: /google\.com\/uc/.test(audioEl?.src||'')});
+      tests.push({name:'GitHub 或本機來源', pass: /(raw\.githubusercontent\.com|cdn\.jsdelivr\.net|\/music\/)/.test([].map.call(document.querySelectorAll('#player source'), s=>s.getAttribute('src')).join(' '))});
+      tests.push({name:'至少有兩個音源備援', pass: document.querySelectorAll('#player source').length >= 2});
+      tests.push({name:'存在唱片封面', pass: !!document.querySelector('#audioBar .cover')});
       tests.forEach(t=> console.assert(t.pass, `[自測] 失敗：${t.name}`));
       if (tests.every(t=>t.pass)) console.log('%c[自測] 通過：基本節點存在','color:#7aa2ff');
     })();
@@ -321,12 +312,6 @@
       const coverEl = document.querySelector('#audioBar .cover');
       if (!player || !playBtn){ console.warn('[音樂] 找不到播放節點，已略過事件綁定'); return; }
 
-      // 嘗試使用同網域音檔（最穩定）：music/track.mp3 存在則優先
-      const localUrl = 'music/huangchenjinfa.mp3';
-      const primary = document.getElementById('srcPrimary');
-      const alt = document.getElementById('srcAlt');
-      try{ fetch(localUrl, { method:'HEAD' }).then(r=>{ if(r.ok && primary){ primary.src = localUrl; player.load(); } }); }catch(_){}
-
       const fmt = (t)=> (isFinite(t) ? String(Math.floor(t/60)).padStart(2,'0')+':'+String(Math.floor(t%60)).padStart(2,'0') : '--:--');
       const update = ()=>{
         if (timeEl) timeEl.textContent = fmt(player.currentTime);
@@ -342,12 +327,13 @@
 
       freshBtn.addEventListener('click', async ()=>{
         try{ if (player.paused) { await player.play(); } else { player.pause(); } }
-        catch(err){ const fb=document.getElementById('audioFallback'); if (fb) fb.style.display='block'; console.error(err); }
+        catch(err){ console.warn('[音樂] 播放失敗，切換來源', err); nextSource(); }
       }); } else { player.pause(); } }
-        catch(err){ alert('播放被瀏覽器阻擋，請再次點擊或檢查檔案路徑。'); console.error(err); }
+        catch(err){ const fb=document.getElementById('audioFallback'); if (fb) fb.style.display='block'; console.error(err); }
       });
+
       if (prevBtn) prevBtn.addEventListener('click', ()=>{ player.currentTime = 0; });
-      if (nextBtn) nextBtn.addEventListener('click', ()=>{ player.currentTime = 0; });
+      if (nextBtn) nextBtn.addEventListener('click', ()=>{ player.currentTime = Math.max(0, player.duration-0.01); });
 
       if (progress) progress.addEventListener('click', (e)=>{
         const r = progress.getBoundingClientRect();
@@ -357,14 +343,19 @@
 
       player.addEventListener('timeupdate', update);
       player.addEventListener('loadedmetadata', update);
-      player.addEventListener('play', ()=>{ if(coverEl) coverEl.classList.add('spinning'); refreshIcons(); update(); }); update(); });
-      player.addEventListener('pause', ()=>{ if(coverEl) coverEl.classList.remove('spinning'); refreshIcons(); update(); }); update(); });
+      player.addEventListener('play', ()=>{ if(coverEl) coverEl.classList.add('spinning'); refreshIcons(); update(); });
+      player.addEventListener('pause', ()=>{ if(coverEl) coverEl.classList.remove('spinning'); refreshIcons(); update(); });
       player.addEventListener('ended', ()=>{ refreshIcons(); });
-      player.addEventListener('error', ()=>{ const fb=document.getElementById('audioFallback'); if (fb) fb.style.display='block'; }); if (fb) fb.style.display='block'; });
+      player.addEventListener('error', ()=>{ console.warn('[音樂] 當前來源錯誤，切換下一個'); nextSource(); });
+      player.addEventListener('stalled', ()=>{ console.warn('[音樂] 資料停滯，切換下一個'); nextSource(); });
+      // 若 3 秒還沒拿到時長，視為來源有問題
+      player.addEventListener('loadedmetadata', ()=>{ clearTimeout(window.__metaTimer); });
+      window.__metaTimer = setTimeout(()=>{ if (!isFinite(player.duration) || player.duration === 0){ console.warn('[音樂] 逾時未取得 metadata，切換來源'); nextSource(); } }, 3000); if (fb) fb.style.display='block'; });
 
       update(); refreshIcons();
     }
-if (document.readyState === 'loading'){
+
+    if (document.readyState === 'loading'){
       document.addEventListener('DOMContentLoaded', initAudioControls);
     }else{
       initAudioControls();
@@ -382,14 +373,13 @@ if (document.readyState === 'loading'){
     (function(){
       const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
-      // 將需要 3D 的元素加上 tilt 類別（不改你的原始 HTML 結構）
       const profile = document.querySelector('.profile');
       if (profile) profile.classList.add('tilt');
       document.querySelectorAll('.card, .media-thumb, .gallery img').forEach(el => el.classList.add('tilt'));
 
       if (!isTouch){
-        const maxTilt = 14;  // 最大傾斜角度（可調）
-        const scale   = 1.03; // 懸停縮放（可調）
+        const maxTilt = 14;  // 最大傾斜角度
+        const scale   = 1.03; // 懸停縮放
 
         const els = Array.from(document.querySelectorAll('.tilt'));
         function setTilt(el, e){
@@ -405,7 +395,6 @@ if (document.readyState === 'loading'){
           el.addEventListener('mouseleave',   ()=> el.style.transform = '');
         });
 
-        // 微視差：讓發光球(orb)跟隨滑鼠輕微移動
         const orb = document.querySelector('.orb');
         if (orb){
           window.addEventListener('mousemove', (e) => {
