@@ -116,7 +116,11 @@
 
     /* 自訂音樂播放器條 */
     .audio-player{ display:grid; grid-template-columns: auto 1fr auto; gap:14px; align-items:center; padding:12px; border-radius:14px; background: linear-gradient(180deg, var(--card), var(--card-2)); border:1px solid rgba(255,255,255,.06); box-shadow: var(--shadow); }
-    .audio-player .cover{ width:52px; height:52px; border-radius:10px; object-fit:cover; border:1px solid rgba(255,255,255,.08); background:#0e1330 }
+    .audio-player .cover{ width:64px; height:64px; border-radius:50%; object-fit:cover; border:1px solid rgba(255,255,255,.12); background:#0e1330; box-shadow:inset 0 0 0 2px rgba(255,255,255,.05), 0 2px 8px rgba(0,0,0,.35); transition: transform .3s ease }
+    .disc{ position:relative; width:64px; height:64px; border-radius:50%; display:grid; place-items:center; }
+    .disc::after{ content:""; position:absolute; width:12px; height:12px; border-radius:50%; background:rgba(10,15,35,.9); box-shadow:0 0 0 2px rgba(255,255,255,.08) inset }
+    @keyframes spin{ to{ transform: rotate(360deg) } }
+    .cover.spinning{ animation: spin 6s linear infinite }
     .audio-player .meta{ line-height:1.3 }
     .audio-player .title{ font-weight:700 }
     .audio-player .artist{ color:var(--muted); font-size:14px }
@@ -232,10 +236,10 @@
       <h2>音樂</h2>
       <div class="card">
         <div class="audio-player tilt" id="audioBar">
-          <img class="cover" src="music/cover.jpg" alt="專輯封面" onerror="this.style.display='none'"/>
+          <div class="disc"><img class="cover" src="ChatGPT Image Aug 7, 2025, 04_40_41 PM.png" alt="專輯封面" onerror="this.style.display='none'"/></div>
           <div class="meta">
             <div class="title">黃陳進發的歌</div>
-            <div class="artist">Augustus · <span id="time">00:00</span> / <span id="dur">--:--</span></div>
+            <div class="artist"><span id="time">00:00</span> / <span id="dur">--:--</span></div>
           </div>
           <div class="controls">
             <button class="icon-btn" id="prevBtn" aria-label="上一首">
@@ -314,6 +318,7 @@
       const durEl   = document.getElementById('dur');
       const progress = document.getElementById('progress');
       const progressBar = document.getElementById('progressBar');
+      const coverEl = document.querySelector('#audioBar .cover');
       if (!player || !playBtn){ console.warn('[音樂] 找不到播放節點，已略過事件綁定'); return; }
 
       // 嘗試使用同網域音檔（最穩定）：music/track.mp3 存在則優先
@@ -352,8 +357,8 @@
 
       player.addEventListener('timeupdate', update);
       player.addEventListener('loadedmetadata', update);
-      player.addEventListener('play', ()=>{ refreshIcons(); update(); });
-      player.addEventListener('pause', ()=>{ refreshIcons(); update(); });
+      player.addEventListener('play', ()=>{ if(coverEl) coverEl.classList.add('spinning'); refreshIcons(); update(); }); update(); });
+      player.addEventListener('pause', ()=>{ if(coverEl) coverEl.classList.remove('spinning'); refreshIcons(); update(); }); update(); });
       player.addEventListener('ended', ()=>{ refreshIcons(); });
       player.addEventListener('error', ()=>{ const fb=document.getElementById('audioFallback'); if (fb) fb.style.display='block'; }); if (fb) fb.style.display='block'; });
 
@@ -415,5 +420,3 @@ if (document.readyState === 'loading'){
   </script>
 </body>
 </html>
-
-
