@@ -45,10 +45,7 @@
     .btn{ padding:12px 18px; border-radius: 999px; font-weight:700; cursor:pointer; border:1px solid rgba(255,255,255,.1); background: linear-gradient(135deg, var(--accent), var(--accent-2)); color:#0b1020; box-shadow: var(--shadow) }
     .btn.secondary{ background: transparent; color: var(--text); border-color: rgba(122,162,255,.35) }
 
-    .profile{
-      position:relative; aspect-ratio: 1/1; border-radius: var(--radius); overflow:hidden; background: linear-gradient(135deg, rgba(122,162,255,.12), rgba(184,123,255,.12));
-      border:1px solid rgba(122,162,255,.25); box-shadow: var(--shadow);
-    }
+    .profile{ position:relative; aspect-ratio: 1/1; border-radius: var(--radius); overflow:hidden; background: linear-gradient(135deg, rgba(122,162,255,.12), rgba(184,123,255,.12)); border:1px solid rgba(122,162,255,.25); box-shadow: var(--shadow) }
     .profile img{ width:100%; height:100%; object-fit:cover; display:block }
 
     section{ padding:56px 0 }
@@ -75,14 +72,14 @@
     @media (max-width: 900px){ .hero{ grid-template-columns: 1fr } }
     @media (max-width: 700px){ .grid.cols-3{ grid-template-columns: 1fr } .grid.cols-2{ grid-template-columns: 1fr } .gallery{ grid-template-columns: 1fr 1fr } .media-card{ grid-template-columns: 1fr } }
 
-    .orb{ position: absolute; inset:auto; pointer-events:none; filter: blur(40px); opacity:.35; background: radial-gradient(circle at 30% 30%, var(--accent), transparent 60%); width: 240px; height:240px; border-radius:50%; right:-40px; top:-40px; animation: float 8s ease-in-out infinite alternate; }
+    .orb{ position: absolute; inset:auto; pointer-events:none; filter: blur(40px); opacity:.35; background: radial-gradient(circle at 30% 30%, var(--accent), transparent 60%); width: 240px; height:240px; border-radius:50%; right:-40px; top:-40px; animation: float 8s ease-in-out infinite alternate }
     @keyframes float{ from{ transform: translateY(0) } to{ transform: translateY(18px) } }
 
     .scroll-hint{ font-size:13px; color:var(--muted); display:flex; align-items:center; gap:8px }
     .dot{ width:6px; height:6px; border-radius:50%; background: var(--accent); box-shadow: 0 0 0 6px rgba(122,162,255,.1) }
 
-    .tilt{ transform-style: preserve-3d; transition: transform .25s ease, box-shadow .25s ease; will-change: transform; }
-    .tilt:hover{ box-shadow: 0 14px 40px rgba(0,0,0,.45), 0 0 0 1px rgba(122,162,255,.18) inset; }
+    .tilt{ transform-style: preserve-3d; transition: transform .25s ease, box-shadow .25s ease; will-change: transform }
+    .tilt:hover{ box-shadow: 0 14px 40px rgba(0,0,0,.45), 0 0 0 1px rgba(122,162,255,.18) inset }
     @media (prefers-reduced-motion: reduce){ .tilt{ transition:none } }
 
     /* 單一影片放大樣式 */
@@ -132,7 +129,6 @@
   </header>
 
   <main class="container">
-    <!-- Hero -->
     <section class="hero">
       <div>
         <h1>嗨，我是<span style="background:linear-gradient(135deg,var(--accent),var(--accent-2)); -webkit-background-clip:text; background-clip:text; color:transparent">（你的名字）</span></h1>
@@ -149,56 +145,6 @@
       </div>
     </section>
 
-    <!-- About -->
-    <section id="about">
-      <h2>關於我</h2>
-      <div class="card">
-        <p>我是（你的名字），目前就讀／任職於（學校／公司）。興趣包含：攝影、音樂、剪輯、網頁前端開發等。我相信設計不只是外觀，更是溝通與體驗；寫程式不只是功能，更是把想法落地。</p>
-        <div class="tags" style="margin-top:10px">
-          <span class="tag">#前端開發</span>
-          <span class="tag">#攝影剪輯</span>
-          <span class="tag">#音樂創作</span>
-          <span class="tag">#持續學習</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- Skills -->
-    <section id="skills">
-      <h2>技能</h2>
-      <div class="grid cols-3">
-        <div class="card">
-          <h3 style="margin:0 0 6px">網頁技術</h3>
-          <p style="margin:0; color:var(--muted)">HTML / CSS / JavaScript、RWD 響應式設計、基本 SEO、簡易互動效果</p>
-        </div>
-        <div class="card">
-          <h3 style="margin:0 0 6px">多媒體</h3>
-          <p style="margin:0; color:var(--muted)">相片修圖、影片剪輯、音訊處理，能將素材整合成完整作品</p>
-        </div>
-        <div class="card">
-          <h3 style="margin:0 0 6px">團隊與學習</h3>
-          <p style="margin:0; color:var(--muted)">良好溝通、時間管理、主動學習新工具與新知識</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Gallery -->
-    <section id="gallery">
-      <h2>相片畫廊</h2>
-      <div class="card">
-        <p style="margin-top:0;color:var(--muted)">以下為示意縮圖，請將檔案路徑替換成你的相片。</p>
-        <div class="gallery" style="margin-top:10px">
-          <img src="images/profile.jpg" alt="我的個人照片" />
-          <img src="images/photo2.jpg" alt="相片 2" />
-          <img src="images/photo3.jpg" alt="相片 3" />
-          <img src="images/photo4.jpg" alt="相片 4" />
-          <img src="images/photo5.jpg" alt="相片 5" />
-          <img src="images/photo6.jpg" alt="相片 6" />
-        </div>
-      </div>
-    </section>
-
-    <!-- Video -->
     <section id="video">
       <h2>影片</h2>
       <div class="card featured-video">
@@ -208,7 +154,6 @@
       </div>
     </section>
 
-    <!-- Music -->
     <section id="music">
       <h2>音樂</h2>
       <div class="card">
@@ -233,17 +178,15 @@
           <div class="progress" id="progress"><div class="progress__bar" id="progressBar"></div></div>
         </div>
         <audio id="player" data-testid="audio-player" preload="metadata" crossorigin="anonymous" playsinline>
-          <!-- 主要來源：同站 GitHub Pages；備用：raw.githubusercontent CDN；最後：jsDelivr CDN -->
-          <source id="srcPrimary" src="music/huangchenjinfa.mp3" type="audio/mpeg" />
-          <source id="srcRaw" src="https://raw.githubusercontent.com/Augustusz14/my-website/main/music/huangchenjinfa.mp3" type="audio/mpeg" />
-          <source id="srcCdn" src="https://cdn.jsdelivr.net/gh/Augustusz14/my-website@main/music/huangchenjinfa.mp3" type="audio/mpeg" />
+          <source id="srcPages" src="music/huangchenjinfa.mp3" type="audio/mpeg" />
+          <source id="srcRaw"   src="https://raw.githubusercontent.com/Augustusz14/my-website/main/music/huangchenjinfa.mp3" type="audio/mpeg" />
+          <source id="srcCdn"   src="https://cdn.jsdelivr.net/gh/Augustusz14/my-website@main/music/huangchenjinfa.mp3" type="audio/mpeg" />
         </audio>
         <p id="audioFallback" style="margin-top:10px;color:var(--muted); display:none">若無法直接播放，請在新分頁開啟：
           <a href="music/huangchenjinfa.mp3" target="_blank" rel="noopener">GitHub Pages 音檔連結</a></p>
       </div>
     </section>
 
-    <!-- Contact -->
     <section id="contact">
       <h2>聯絡我</h2>
       <div class="card" id="contact-card">
@@ -265,9 +208,7 @@
   </main>
 
   <footer>
-    <div class="container">
-      © <span id="year"></span> （你的名字）. 以繁體中文設計製作。
-    </div>
+    <div class="container">© <span id="year"></span> （你的名字）. 以繁體中文設計製作。</div>
   </footer>
 
   <script>
@@ -279,8 +220,8 @@
       tests.push({name:'存在音樂播放器#audio#player', pass: !!document.getElementById('player')});
       tests.push({name:'存在進度條#progressBar', pass: !!document.getElementById('progressBar')});
       tests.push({name:'存在自訂播放器#audioBar', pass: !!document.getElementById('audioBar')});
-      const audioEl = document.getElementById('player');
-      tests.push({name:'GitHub 或本機來源', pass: /(raw\.githubusercontent\.com|cdn\.jsdelivr\.net|\/music\/)/.test([].map.call(document.querySelectorAll('#player source'), s=>s.getAttribute('src')).join(' '))});
+      const srcs = Array.from(document.querySelectorAll('#player source')).map(s=>s.getAttribute('src')).join(' ');
+      tests.push({name:'GitHub 或本機來源', pass: /(raw\.githubusercontent\.com|cdn\.jsdelivr\.net|\/music\/)/.test(srcs)});
       tests.push({name:'至少有兩個音源備援', pass: document.querySelectorAll('#player source').length >= 2});
       tests.push({name:'存在唱片封面', pass: !!document.querySelector('#audioBar .cover')});
       tests.forEach(t=> console.assert(t.pass, `[自測] 失敗：${t.name}`));
@@ -290,62 +231,68 @@
     // 年份
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // 音樂播放按鈕（避免自動播放限制）——安全綁定
-    function initAudioControls(){
+    // 音樂：初始化控制器（簡化、乾淨版）
+    function initAudio(){
       const player = document.getElementById('player');
       const playBtn = document.getElementById('playBtn');
       const prevBtn = document.getElementById('prevBtn');
       const nextBtn = document.getElementById('nextBtn');
-      const timeEl  = document.getElementById('time');
-      const durEl   = document.getElementById('dur');
       const progress = document.getElementById('progress');
-      const progressBar = document.getElementById('progressBar');
-      const coverEl = document.querySelector('#audioBar .cover');
-      if (!player || !playBtn){ console.warn('[音樂] 找不到播放節點，已略過事件綁定'); return; }
+      const bar = document.getElementById('progressBar');
+      const timeEl = document.getElementById('time');
+      const durEl = document.getElementById('dur');
+      const cover = document.querySelector('#audioBar .cover');
+      if (!player || !playBtn) return;
 
-      // 依序嘗試多個來源（Pages -> raw -> jsDelivr）
+      // 音源輪替（Pages -> raw -> jsDelivr）
       const sources = Array.from(player.querySelectorAll('source')).map(s=> s.getAttribute('src'));
-      let srcIdx = 0;
-      function setSource(i){ srcIdx = i; player.src = sources[srcIdx]; player.load(); }
-      function nextSource(){ if (srcIdx + 1 < sources.length){ setSource(srcIdx + 1); } else { const fb=document.getElementById('audioFallback'); if (fb) fb.style.display='block'; } }
+      let idx = 0;
+      const setSource = (i)=>{ idx=i; player.src = sources[idx]; player.load(); };
+      const tryNext = ()=>{ if (idx+1 < sources.length) { setSource(idx+1); } else { const fb=document.getElementById('audioFallback'); if (fb) fb.style.display='block'; } };
       setSource(0);
 
-      const fmt = (t)=> (isFinite(t) ? String(Math.floor(t/60)).padStart(2,'0')+':'+String(Math.floor(t%60)).padStart(2,'0') : '--:--');
+      const fmt = (t)=> isFinite(t) ? `${String(Math.floor(t/60)).padStart(2,'0')}:${String(Math.floor(t%60)).padStart(2,'0')}` : '--:--';
       const update = ()=>{
         if (timeEl) timeEl.textContent = fmt(player.currentTime);
         if (durEl && isFinite(player.duration)) durEl.textContent = fmt(player.duration);
-        const ratio = (isFinite(player.duration) && player.duration>0) ? player.currentTime / player.duration : 0;
-        if (progressBar) progressBar.style.transform = `scaleX(${Math.max(0, Math.min(1, ratio))})`;
+        const ratio = (isFinite(player.duration) && player.duration>0) ? player.currentTime/player.duration : 0;
+        if (bar) bar.style.transform = `scaleX(${Math.max(0,Math.min(1,ratio))})`;
       };
-      const refreshIcons = ()=>{ playBtn.classList.toggle('is-playing', !player.paused); };
+      const refresh = ()=>{ playBtn.classList.toggle('is-playing', !player.paused); };
 
-      // 防止重複綁定
+      // 解除舊事件、綁定播放按鈕
       playBtn.replaceWith(playBtn.cloneNode(true));
-      const freshBtn = document.getElementById('playBtn');
-
-      freshBtn.addEventListener('click', async ()=>{
-        try{ if (player.paused) { await player.play(); } else { player.pause(); } }
-        catch(err){ console.warn('[音樂] 播放失敗，切換來源', err); nextSource(); }
+      const fresh = document.getElementById('playBtn');
+      fresh.addEventListener('click', async ()=>{
+        try{ if (player.paused) await player.play(); else player.pause(); }
+        catch(e){ console.warn('[音樂] 播放失敗，嘗試下一來源', e); tryNext(); }
       });
 
+      // 其他控制
       if (prevBtn) prevBtn.addEventListener('click', ()=>{ player.currentTime = 0; });
-      if (nextBtn) nextBtn.addEventListener('click', ()=>{ player.currentTime = Math.max(0, player.duration-0.01); });
-
-      if (progress) progress.addEventListener('click', (e)=>{
-        const r = progress.getBoundingClientRect();
-        const p = (e.clientX - r.left) / r.width;
-        if (isFinite(player.duration)) player.currentTime = Math.max(0, Math.min(player.duration * p, player.duration));
+      if (nextBtn) nextBtn.addEventListener('click', ()=>{ if (isFinite(player.duration)) player.currentTime = Math.max(0, player.duration-0.05); });
+      if (progress) progress.addEventListener('click', e=>{
+        const r=progress.getBoundingClientRect(); const p=(e.clientX-r.left)/r.width;
+        if (isFinite(player.duration)) player.currentTime = Math.max(0, Math.min(player.duration*p, player.duration));
       });
 
+      // 事件
       player.addEventListener('timeupdate', update);
       player.addEventListener('loadedmetadata', ()=>{ update(); clearTimeout(window.__metaTimer); });
-      player.addEventListener('play', ()=>{ if(coverEl) coverEl.classList.add('spinning'); refreshIcons(); update(); });
-      player.addEventListener('pause', ()=>{ if(coverEl) coverEl.classList.remove('spinning'); refreshIcons(); update(); });
-      player.addEventListener('ended', ()=>{ refreshIcons(); });
-      player.addEventListener('error', ()=>{ console.warn('[音樂] 當前來源錯誤，切換下一個'); nextSource(); });
-      player.addEventListener('stalled', ()=>{ console.warn('[音樂] 資料停滯，切換下一個'); nextSource(); });
-      // 若 3 秒還沒拿到時長，視為來源有問題
-      window.__metaTimer = setTimeout(()=>{ if (!isFinite(player.duration) || player.duration === 0){ console.warn('[音樂] 逾時未取得 metadata，切換來源'); nextSource(); } }
+      player.addEventListener('play', ()=>{ if(cover) cover.classList.add('spinning'); refresh(); update(); });
+      player.addEventListener('pause', ()=>{ if(cover) cover.classList.remove('spinning'); refresh(); update(); });
+      player.addEventListener('ended', ()=>{ refresh(); });
+      player.addEventListener('error', ()=>{ console.warn('[音樂] 當前來源錯誤，切換下一個'); tryNext(); });
+      player.addEventListener('stalled', ()=>{ console.warn('[音樂] 資料停滯，切換下一個'); tryNext(); });
+      window.__metaTimer = setTimeout(()=>{ if (!isFinite(player.duration) || player.duration===0) { console.warn('[音樂] 逾時未取得 metadata，切換來源'); tryNext(); } }, 3000);
+
+      update(); refresh();
+    }
+
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initAudio);
+    else initAudio();
+
+    // 平滑捲動
     document.querySelectorAll('a[href^="#"]').forEach(a=>{
       a.addEventListener('click', e=>{
         const id=a.getAttribute('href');
@@ -353,41 +300,21 @@
       });
     });
 
-    /* === 3D 互動效果：卡片/圖片傾斜 + 發光球微視差 === */
+    // 3D 傾斜 + 微視差
     (function(){
       const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-
-      const profile = document.querySelector('.profile');
-      if (profile) profile.classList.add('tilt');
-      document.querySelectorAll('.card, .media-thumb, .gallery img').forEach(el => el.classList.add('tilt'));
-
+      document.querySelectorAll('.card, .media-thumb, .profile').forEach(el => el.classList.add('tilt'));
       if (!isTouch){
-        const maxTilt = 14;  // 最大傾斜角度
-        const scale   = 1.03; // 懸停縮放
-
-        const els = Array.from(document.querySelectorAll('.tilt'));
-        function setTilt(el, e){
-          const r  = el.getBoundingClientRect();
-          const px = (e.clientX - r.left) / r.width  - 0.5;
-          const py = (e.clientY - r.top)  / r.height - 0.5;
-          const rx = (-py * maxTilt).toFixed(2);
-          const ry = ( px * maxTilt).toFixed(2);
-          el.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) scale(${scale})`;
-        }
-        els.forEach(el => {
-          el.addEventListener('mousemove', (e)=> setTilt(el, e));
-          el.addEventListener('mouseleave',   ()=> el.style.transform = '');
-        });
-
-        const orb = document.querySelector('.orb');
-        if (orb){
-          window.addEventListener('mousemove', (e) => {
-            const w = window.innerWidth, h = window.innerHeight;
-            const dx = (e.clientX / w - 0.5) * 24;
-            const dy = (e.clientY / h - 0.5) * 24;
-            orb.style.transform = `translate3d(${dx}px, ${dy}px, 0)`;
-          });
-        }
+        const maxTilt=14, scale=1.03;
+        const els=[...document.querySelectorAll('.tilt')];
+        const setTilt=(el,e)=>{
+          const r=el.getBoundingClientRect();
+          const px=(e.clientX-r.left)/r.width-0.5, py=(e.clientY-r.top)/r.height-0.5;
+          el.style.transform=`perspective(900px) rotateX(${-py*maxTilt}deg) rotateY(${px*maxTilt}deg) scale(${scale})`;
+        };
+        els.forEach(el=>{ el.addEventListener('mousemove',e=>setTilt(el,e)); el.addEventListener('mouseleave',()=>el.style.transform=''); });
+        const orb=document.querySelector('.orb');
+        if (orb) window.addEventListener('mousemove',e=>{ const w=innerWidth,h=innerHeight; orb.style.transform=`translate3d(${(e.clientX/w-0.5)*24}px, ${(e.clientY/h-0.5)*24}px, 0)`; });
       }
     })();
   </script>
