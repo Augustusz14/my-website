@@ -1,13 +1,4 @@
-const progressBar = document.getElementById('progressBar');
-      const coverEl = document.querySelector('#audioBar .cover');
-      if (!player || !playBtn){ console.warn('[音樂] 找不到播放節點，已略過事件綁定'); return; }
-
-      // 依序嘗試多個來源（Pages -> raw -> jsDelivr）
-      const sources = Array.from(player.querySelectorAll('source')).map(s=> s.getAttribute('src'));
-      let srcIdx = 0;
-      function setSource(i){ srcIdx = i; player.src = sources[srcIdx]; player.load(); }
-      function nextSource(){ if (srcIdx + 1 < sources.length){ setSource(srcIdx + 1); } else { const fb=document.getElementById('audioFallback'); if (fb) fb.style.display='block'; } }
-      setSource(0);<!doctype html>
+<!doctype html>
 <html lang="zh-Hant">
 <head>
   <meta charset="utf-8" />
@@ -312,6 +303,13 @@ const progressBar = document.getElementById('progressBar');
       const coverEl = document.querySelector('#audioBar .cover');
       if (!player || !playBtn){ console.warn('[音樂] 找不到播放節點，已略過事件綁定'); return; }
 
+      // 依序嘗試多個來源（Pages -> raw -> jsDelivr）
+      const sources = Array.from(player.querySelectorAll('source')).map(s=> s.getAttribute('src'));
+      let srcIdx = 0;
+      function setSource(i){ srcIdx = i; player.src = sources[srcIdx]; player.load(); }
+      function nextSource(){ if (srcIdx + 1 < sources.length){ setSource(srcIdx + 1); } else { const fb=document.getElementById('audioFallback'); if (fb) fb.style.display='block'; } }
+      setSource(0);
+
       const fmt = (t)=> (isFinite(t) ? String(Math.floor(t/60)).padStart(2,'0')+':'+String(Math.floor(t%60)).padStart(2,'0') : '--:--');
       const update = ()=>{
         if (timeEl) timeEl.textContent = fmt(player.currentTime);
@@ -328,8 +326,6 @@ const progressBar = document.getElementById('progressBar');
       freshBtn.addEventListener('click', async ()=>{
         try{ if (player.paused) { await player.play(); } else { player.pause(); } }
         catch(err){ console.warn('[音樂] 播放失敗，切換來源', err); nextSource(); }
-      }); } else { player.pause(); } }
-        catch(err){ const fb=document.getElementById('audioFallback'); if (fb) fb.style.display='block'; console.error(err); }
       });
 
       if (prevBtn) prevBtn.addEventListener('click', ()=>{ player.currentTime = 0; });
@@ -342,26 +338,14 @@ const progressBar = document.getElementById('progressBar');
       });
 
       player.addEventListener('timeupdate', update);
-      player.addEventListener('loadedmetadata', update);
+      player.addEventListener('loadedmetadata', ()=>{ update(); clearTimeout(window.__metaTimer); });
       player.addEventListener('play', ()=>{ if(coverEl) coverEl.classList.add('spinning'); refreshIcons(); update(); });
       player.addEventListener('pause', ()=>{ if(coverEl) coverEl.classList.remove('spinning'); refreshIcons(); update(); });
       player.addEventListener('ended', ()=>{ refreshIcons(); });
       player.addEventListener('error', ()=>{ console.warn('[音樂] 當前來源錯誤，切換下一個'); nextSource(); });
       player.addEventListener('stalled', ()=>{ console.warn('[音樂] 資料停滯，切換下一個'); nextSource(); });
       // 若 3 秒還沒拿到時長，視為來源有問題
-      player.addEventListener('loadedmetadata', ()=>{ clearTimeout(window.__metaTimer); });
-      window.__metaTimer = setTimeout(()=>{ if (!isFinite(player.duration) || player.duration === 0){ console.warn('[音樂] 逾時未取得 metadata，切換來源'); nextSource(); } }, 3000); if (fb) fb.style.display='block'; });
-
-      update(); refreshIcons();
-    }
-
-    if (document.readyState === 'loading'){
-      document.addEventListener('DOMContentLoaded', initAudioControls);
-    }else{
-      initAudioControls();
-    }
-
-    // 導覽平滑捲動
+      window.__metaTimer = setTimeout(()=>{ if (!isFinite(player.duration) || player.duration === 0){ console.warn('[音樂] 逾時未取得 metadata，切換來源'); nextSource(); } }
     document.querySelectorAll('a[href^="#"]').forEach(a=>{
       a.addEventListener('click', e=>{
         const id=a.getAttribute('href');
