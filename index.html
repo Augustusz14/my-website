@@ -317,7 +317,7 @@
       if (!player || !playBtn){ console.warn('[音樂] 找不到播放節點，已略過事件綁定'); return; }
 
       // 嘗試使用同網域音檔（最穩定）：music/track.mp3 存在則優先
-      const localUrl = 'music/track.mp3';
+      const localUrl = 'music/huangchenjinfa.mp3';
       const primary = document.getElementById('srcPrimary');
       const alt = document.getElementById('srcAlt');
       try{ fetch(localUrl, { method:'HEAD' }).then(r=>{ if(r.ok && primary){ primary.src = localUrl; player.load(); } }); }catch(_){}
@@ -415,4 +415,5 @@ if (document.readyState === 'loading'){
   </script>
 </body>
 </html>
+
 
