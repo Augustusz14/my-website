@@ -110,7 +110,8 @@
     .progress{ grid-column: 1 / -1; position:relative; height:8px; background: rgba(255,255,255,.06); border-radius:999px; overflow:hidden }
     .progress__bar{ position:absolute; inset:0; transform-origin:left center; transform: scaleX(0); background: linear-gradient(90deg, var(--accent), var(--accent-2)) }
     #player{ display:none }
-      /* ===== Scroll Reveal Animations ===== */
+
+    /* ===== Scroll Reveal Animations ===== */
     .reveal{ opacity:0; transform: translateY(16px); filter: blur(4px); transition: opacity .7s ease, transform .7s ease, filter .7s ease }
     .reveal.show{ opacity:1; transform:none; filter: blur(0) }
     [data-reveal="fade-left"]{ transform: translateX(-24px) }
@@ -122,7 +123,7 @@
     .nav a{ position:relative }
     .nav a::after{ content:""; position:absolute; left:0; right:0; bottom:-6px; height:2px; background: linear-gradient(90deg,var(--accent),var(--accent-2)); transform: scaleX(0); transform-origin:left; transition: transform .25s ease }
     .nav a:hover::after{ transform: scaleX(1) }
-</style>
+  </style>
   <link rel="preload" as="image" href="images/profile.jpg" />
 </head>
 <body>
@@ -131,8 +132,6 @@
       <div style="font-weight:800; letter-spacing:.5px">我的個人介紹</div>
       <nav>
         <a href="#about">關於我</a>
-        
-       
         <a href="#video">影片</a>
         <a href="#music">音樂</a>
         <a href="#contact">聯絡</a>
@@ -151,13 +150,20 @@
         </div>
         <div style="margin-top:18px" class="scroll-hint"><span class="dot"></span>向下捲動以查看更多內容</div>
       </div>
+
+      <!-- ĐÃ ĐỔI ẢNH ĐẠI DIỆN Ở ĐÂY -->
       <div class="profile">
-        <img src="images/profile.jpg" alt="個人照片：夜景街頭人像" loading="eager" fetchpriority="high" />
+        <img
+          src="https://augustusz14.github.io/my-website/avatar.jpg"
+          alt="Ảnh đại diện của 黃陳進發"
+          loading="eager"
+          fetchpriority="high"
+        />
         <div class="orb" aria-hidden="true"></div>
       </div>
     </section>
 
-    <!-- About (新增) -->
+    <!-- About -->
     <section id="about" class="reveal" data-reveal="fade-right">
       <h2>關於我</h2>
       <div class="card">
@@ -183,8 +189,18 @@
     <section id="music" class="reveal" data-reveal="fade-up" data-delay="140">
       <h2>音樂</h2>
       <div class="card reveal" data-reveal="zoom-in" data-delay="160">
+
         <div class="audio-player tilt" id="audioBar">
-          <div class="disc"><img class="cover" src="music/ChatGPT%20Image%20Aug%207,%202025,%2004_40_41%20PM.png" alt="專輯封面" onerror="this.style.display='none'"/></div>
+          <!-- ĐÃ ĐỔI ẢNH BÌA NHẠC Ở ĐÂY -->
+          <div class="disc">
+            <img
+              class="cover"
+              src="https://augustusz14.github.io/my-website/avatar.jpg"
+              alt="專輯封面"
+              onerror="this.style.display='none'"
+            />
+          </div>
+
           <div class="meta">
             <div class="title">黃陳進發的歌</div>
             <div class="artist"><span id="time">00:00</span> / <span id="dur">--:--</span></div>
@@ -203,6 +219,7 @@
           </div>
           <div class="progress" id="progress"><div class="progress__bar" id="progressBar"></div></div>
         </div>
+
         <audio id="player" data-testid="audio-player" preload="metadata" crossorigin="anonymous" playsinline>
           <source id="srcPages" src="music/huangchenjinfa.mp3" type="audio/mpeg" />
           <source id="srcRaw"   src="https://raw.githubusercontent.com/Augustusz14/my-website/main/music/huangchenjinfa.mp3" type="audio/mpeg" />
@@ -345,7 +362,8 @@
         if (orb) window.addEventListener('mousemove',e=>{ const w=innerWidth,h=innerHeight; orb.style.transform=`translate3d(${(e.clientX/w-0.5)*24}px, ${(e.clientY/h-0.5)*24}px, 0)`; });
       }
     })();
-      // Scroll Reveal JS
+
+    // Scroll Reveal JS
     (function(){
       const els = Array.from(document.querySelectorAll('.reveal'));
       if (!('IntersectionObserver' in window)) { els.forEach(el=>el.classList.add('show')); return; }
