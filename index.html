@@ -110,7 +110,19 @@
     .progress{ grid-column: 1 / -1; position:relative; height:8px; background: rgba(255,255,255,.06); border-radius:999px; overflow:hidden }
     .progress__bar{ position:absolute; inset:0; transform-origin:left center; transform: scaleX(0); background: linear-gradient(90deg, var(--accent), var(--accent-2)) }
     #player{ display:none }
-  </style>
+      /* ===== Scroll Reveal Animations ===== */
+    .reveal{ opacity:0; transform: translateY(16px); filter: blur(4px); transition: opacity .7s ease, transform .7s ease, filter .7s ease }
+    .reveal.show{ opacity:1; transform:none; filter: blur(0) }
+    [data-reveal="fade-left"]{ transform: translateX(-24px) }
+    [data-reveal="fade-right"]{ transform: translateX(24px) }
+    [data-reveal="zoom-in"]{ transform: scale(.96); opacity:0 }
+    [data-reveal="zoom-in"].show{ transform: scale(1); opacity:1 }
+
+    /* Nav hover underline */
+    .nav a{ position:relative }
+    .nav a::after{ content:""; position:absolute; left:0; right:0; bottom:-6px; height:2px; background: linear-gradient(90deg,var(--accent),var(--accent-2)); transform: scaleX(0); transform-origin:left; transition: transform .25s ease }
+    .nav a:hover::after{ transform: scaleX(1) }
+</style>
   <link rel="preload" as="image" href="images/profile.jpg" />
 </head>
 <body>
@@ -119,8 +131,8 @@
       <div style="font-weight:800; letter-spacing:.5px">我的個人介紹</div>
       <nav>
         <a href="#about">關於我</a>
-        <a href="#skills">技能</a>
-        <a href="#gallery">相片</a>
+        
+       
         <a href="#video">影片</a>
         <a href="#music">音樂</a>
         <a href="#contact">聯絡</a>
@@ -129,10 +141,10 @@
   </header>
 
   <main class="container">
-    <section class="hero">
+    <section class="hero reveal" data-reveal="fade-up">
       <div>
-        <h1>嗨，我是<span style="background:linear-gradient(135deg,var(--accent),var(--accent-2)); -webkit-background-clip:text; background-clip:text; color:transparent">（你的名字）</span></h1>
-        <p>這是一個以繁體中文打造的個人介紹網站。我熱愛科技、設計與學習，喜歡把靈感變成作品。以下有我的簡介、技能、相片、影片與音樂，歡迎探索！</p>
+        <h1>嗨，我是<span style="background:linear-gradient(135deg,var(--accent),var(--accent-2)); -webkit-background-clip:text; background-clip:text; color:transparent">（黃陳進發）</span></h1>
+        <p>                                         </p>
         <div class="cta">
           <a class="btn" href="#about">立即瞭解我</a>
           <a class="btn secondary" href="#contact">與我聯絡</a>
@@ -145,20 +157,34 @@
       </div>
     </section>
 
-    <section id="video">
+    <!-- About (新增) -->
+    <section id="about" class="reveal" data-reveal="fade-right">
+      <h2>關於我</h2>
+      <div class="card">
+        <p>我是<strong>黃陳進發</strong>，來自越南。我喜歡 <strong>電子產品</strong> 與 <strong>最新科技</strong>；目前專注於研究 <strong>ICT（Inner Circle Trader）交易理論</strong>，並在實作中持續精進。</p>
+        <div class="tags" style="margin-top:10px">
+          <span class="tag">#電子產品</span>
+          <span class="tag">#最新科技</span>
+          <span class="tag">#ICT 交易理論</span>
+          <span class="tag">#持續學習</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="video" class="reveal" data-reveal="fade-up" data-delay="100">
       <h2>影片</h2>
-      <div class="card featured-video">
+      <div class="card featured-video reveal" data-reveal="zoom-in" data-delay="120">
         <div class="media-thumb">
           <iframe src="https://www.youtube-nocookie.com/embed/8qmPLQzBRg8?rel=0&playsinline=1" loading="lazy" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </div>
       </div>
     </section>
 
-    <section id="music">
+    <section id="music" class="reveal" data-reveal="fade-up" data-delay="140">
       <h2>音樂</h2>
-      <div class="card">
+      <div class="card reveal" data-reveal="zoom-in" data-delay="160">
         <div class="audio-player tilt" id="audioBar">
-          <div class="disc"><img class="cover" src="ChatGPT Image Aug 7, 2025, 04_40_41 PM.png" alt="專輯封面" onerror="this.style.display='none'"/></div>
+          <div class="disc"><img class="cover" src="music/ChatGPT%20Image%20Aug%207,%202025,%2004_40_41%20PM.png" alt="專輯封面" onerror="this.style.display='none'"/></div>
           <div class="meta">
             <div class="title">黃陳進發的歌</div>
             <div class="artist"><span id="time">00:00</span> / <span id="dur">--:--</span></div>
@@ -189,7 +215,7 @@
 
     <section id="contact">
       <h2>聯絡我</h2>
-      <div class="card" id="contact-card">
+      <div class="card reveal" id="contact-card" data-reveal="fade-up" data-delay="180">
         <form onsubmit="event.preventDefault(); alert('已收到訊息，感謝！'); this.reset();" style="max-width:720px; margin:0 auto">
           <label>你的名字<br/>
             <input required name="name" placeholder="請輸入姓名" style="width:100%; padding:10px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.14); background: rgba(255,255,255,.03); color:var(--text)" />
@@ -220,6 +246,8 @@
       tests.push({name:'存在音樂播放器#audio#player', pass: !!document.getElementById('player')});
       tests.push({name:'存在進度條#progressBar', pass: !!document.getElementById('progressBar')});
       tests.push({name:'存在自訂播放器#audioBar', pass: !!document.getElementById('audioBar')});
+      tests.push({name:'播放鍵在播放器內', pass: !!document.querySelector('#audioBar #playBtn')});
+      tests.push({name:'Meta 區塊在播放器內', pass: !!document.querySelector('#audioBar .meta')});
       const srcs = Array.from(document.querySelectorAll('#player source')).map(s=>s.getAttribute('src')).join(' ');
       tests.push({name:'GitHub 或本機來源', pass: /(raw\.githubusercontent\.com|cdn\.jsdelivr\.net|\/music\/)/.test(srcs)});
       tests.push({name:'至少有兩個音源備援', pass: document.querySelectorAll('#player source').length >= 2});
@@ -316,6 +344,20 @@
         const orb=document.querySelector('.orb');
         if (orb) window.addEventListener('mousemove',e=>{ const w=innerWidth,h=innerHeight; orb.style.transform=`translate3d(${(e.clientX/w-0.5)*24}px, ${(e.clientY/h-0.5)*24}px, 0)`; });
       }
+    })();
+      // Scroll Reveal JS
+    (function(){
+      const els = Array.from(document.querySelectorAll('.reveal'));
+      if (!('IntersectionObserver' in window)) { els.forEach(el=>el.classList.add('show')); return; }
+      const io = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{
+          if (e.isIntersecting){
+            const el = e.target; el.style.transitionDelay = (el.dataset.delay||'0ms');
+            el.classList.add('show'); io.unobserve(el);
+          }
+        });
+      }, { threshold:.15 });
+      els.forEach(el=> io.observe(el));
     })();
   </script>
 </body>
